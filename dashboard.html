@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Online Internship Placement and Monitoring System</title>
+    <meta name="description" content="Admin dashboard for internship placement and monitoring." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <p class="brand-name">InternPath</p>
+          <p class="brand-tag">Placement & Monitoring</p>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button type="button" class="nav-item is-active" data-section="overview">
+            <span class="nav-icon">◉</span> Overview
+          </button>
+          <button type="button" class="nav-item" data-section="students">
+            <span class="nav-icon">👤</span> Student Profiles
+          </button>
+          <button type="button" class="nav-item" data-section="placements">
+            <span class="nav-icon">📋</span> Placements
+          </button>
+          <button type="button" class="nav-item" data-section="companies">
+            <span class="nav-icon">🏢</span> Companies
+          </button>
+          <button type="button" class="nav-item" data-section="progress">
+            <span class="nav-icon">📈</span> Progress Monitoring
+          </button>
+          <button type="button" class="nav-item" data-section="evaluations">
+            <span class="nav-icon">📝</span> Evaluations & Reports
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <p class="admin-label">Signed in as <strong id="adminName">Admin</strong></p>
+          <a class="btn btn-ghost btn-block" href="index.html">Sign out</a>
+        </div>
+      </aside>
+
+      <div class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Admin Portal</p>
+            <h1 id="pageTitle">System Overview</h1>
+          </div>
+        </header>
+
+        <main class="content">
+          <!-- Overview -->
+          <section class="section is-visible" id="section-overview">
+            <p class="section-intro">
+              The Online Internship Placement and Monitoring System connects students, academic
+              coordinators, and partner companies through a centralized platform for placements,
+              progress tracking, and documentation.
+            </p>
+
+            <div class="stats-grid">
+              <article class="stat-card">
+                <span>Registered Students</span>
+                <strong id="statStudents">0</strong>
+                <small>Student profiles on file</small>
+              </article>
+              <article class="stat-card">
+                <span>Active Placements</span>
+                <strong id="statPlacements">0</strong>
+                <small>Confirmed assignments</small>
+              </article>
+              <article class="stat-card">
+                <span>Partner Companies</span>
+                <strong id="statCompanies">0</strong>
+                <small>With open vacancies</small>
+              </article>
+              <article class="stat-card">
+                <span>Pending Evaluations</span>
+                <strong id="statEvaluations">0</strong>
+                <small>Awaiting review</small>
+              </article>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h2>Recent Activity</h2>
+              </div>
+              <div id="activityFeed" class="activity-feed"></div>
+            </div>
+          </section>
+
+          <!-- Feature 1: Student Profile Management -->
+          <section class="section" id="section-students">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Add / Update Student Profile</h3>
+              </div>
+              <form id="studentForm" class="form-grid">
+                <input type="hidden" id="studentEditId" />
+                <label class="field">
+                  <span>Full Name</span>
+                  <input type="text" id="studentName" placeholder="Juan Dela Cruz" required />
+                </label>
+                <label class="field">
+                  <span>Student ID</span>
+                  <input type="text" id="studentIdNo" placeholder="2024-00123" required />
+                </label>
+                <label class="field">
+                  <span>Contact Number</span>
+                  <input type="tel" id="studentPhone" placeholder="09XX XXX XXXX" required />
+                </label>
+                <label class="field">
+                  <span>Course / Program</span>
+                  <input type="text" id="studentCourse" placeholder="BS Information Technology" required />
+                </label>
+                <label class="field">
+                  <span>Year Level</span>
+                  <select id="studentYear" required>
+                    <option value="">Select year</option>
+                    <option value="4th Year">4th Year</option>
+                  </select>
+                </label>
+                <label class="field field-full">
+                  <span>Internship Notes</span>
+                  <textarea id="studentNotes" rows="2" placeholder="Preferred field, skills, availability…"></textarea>
+                </label>
+                <div class="form-actions field-full">
+                  <button type="submit" class="btn btn-primary" id="studentSubmitBtn">Save Profile</button>
+                  <button type="button" class="btn btn-ghost" id="studentCancelBtn" hidden>Cancel Edit</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Student Records</h3>
+                <span class="count-badge" id="studentCount">0 profiles</span>
+              </div>
+              <div id="studentList" class="record-list"></div>
+            </div>
+          </section>
+
+          <!-- Feature 2: Internship Placement Management -->
+          <section class="section" id="section-placements">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>New Placement Application</h3>
+              </div>
+              <form id="placementForm" class="form-grid">
+                <input type="hidden" id="placementEditId" />
+                <label class="field">
+                  <span>Student</span>
+                  <select id="placementStudent" required></select>
+                </label>
+                <label class="field">
+                  <span>Preferred Company</span>
+                  <select id="placementCompany" required></select>
+                </label>
+                <label class="field">
+                  <span>Position Applied</span>
+                  <input type="text" id="placementPosition" placeholder="Web Development Intern" required />
+                </label>
+                <label class="field">
+                  <span>Application Date</span>
+                  <input type="date" id="placementDate" required />
+                </label>
+                <label class="field">
+                  <span>Coordinator Approval</span>
+                  <select id="placementApproval" required>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Placement Status</span>
+                  <select id="placementStatus" required>
+                    <option value="Applied">Applied</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </label>
+                <div class="form-actions field-full">
+                  <button type="submit" class="btn btn-primary">Save Placement</button>
+                  <button type="button" class="btn btn-ghost" id="placementCancelBtn" hidden>Cancel Edit</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Placement Records</h3>
+                <span class="count-badge" id="placementCount">0 applications</span>
+              </div>
+              <div id="placementList" class="record-list"></div>
+            </div>
+          </section>
+
+          <!-- Feature 3: Company Management -->
+          <section class="section" id="section-companies">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Add / Update Company</h3>
+              </div>
+              <form id="companyForm" class="form-grid">
+                <input type="hidden" id="companyEditId" />
+                <label class="field">
+                  <span>Company Name</span>
+                  <input type="text" id="companyName" placeholder="Tech Solutions Inc." required />
+                </label>
+                <label class="field">
+                  <span>Industry</span>
+                  <input type="text" id="companyIndustry" placeholder="Information Technology" required />
+                </label>
+                <label class="field">
+                  <span>Contact Person</span>
+                  <input type="text" id="companyContact" placeholder="Maria Santos" required />
+                </label>
+                <label class="field">
+                  <span>Email</span>
+                  <input type="email" id="companyEmail" placeholder="hr@company.com" required />
+                </label>
+                <label class="field">
+                  <span>Phone</span>
+                  <input type="tel" id="companyPhone" placeholder="02 XXX XXXX" required />
+                </label>
+                <label class="field">
+                  <span>Address</span>
+                  <input type="text" id="companyAddress" placeholder="City, Province" required />
+                </label>
+                <label class="field">
+                  <span>Internship Vacancy</span>
+                  <input type="text" id="companyVacancy" placeholder="Software Developer Intern" required />
+                </label>
+                <label class="field">
+                  <span>Slots Available</span>
+                  <input type="number" id="companySlots" min="1" value="1" required />
+                </label>
+                <div class="form-actions field-full">
+                  <button type="submit" class="btn btn-primary">Save Company</button>
+                  <button type="button" class="btn btn-ghost" id="companyCancelBtn" hidden>Cancel Edit</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Company Database & Vacancies</h3>
+                <span class="count-badge" id="companyCount">0 companies</span>
+              </div>
+              <div id="companyList" class="record-list"></div>
+            </div>
+          </section>
+
+          <!-- Feature 4: Progress Monitoring -->
+          <section class="section" id="section-progress">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Log Progress Entry</h3>
+              </div>
+              <form id="progressForm" class="form-grid">
+                <input type="hidden" id="progressEditId" />
+                <label class="field">
+                  <span>Student</span>
+                  <select id="progressStudent" required></select>
+                </label>
+                <label class="field">
+                  <span>Week / Period</span>
+                  <input type="text" id="progressWeek" placeholder="Week 1 – Jan 6–10" required />
+                </label>
+                <label class="field">
+                  <span>Attendance (days present)</span>
+                  <input type="number" id="progressAttendance" min="0" max="7" value="5" required />
+                </label>
+                <label class="field">
+                  <span>Supervisor Update</span>
+                  <select id="progressSupervisor" required>
+                    <option value="On Track">On Track</option>
+                    <option value="Needs Improvement">Needs Improvement</option>
+                    <option value="Excellent">Excellent</option>
+                  </select>
+                </label>
+                <label class="field field-full">
+                  <span>Weekly Report / Accomplishments</span>
+                  <textarea id="progressReport" rows="3" placeholder="Tasks completed, skills learned, challenges…" required></textarea>
+                </label>
+                <div class="form-actions field-full">
+                  <button type="submit" class="btn btn-primary">Save Progress Log</button>
+                  <button type="button" class="btn btn-ghost" id="progressCancelBtn" hidden>Cancel Edit</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Monitoring Records</h3>
+                <span class="count-badge" id="progressCount">0 logs</span>
+              </div>
+              <div id="progressList" class="record-list"></div>
+            </div>
+          </section>
+
+          <!-- Feature 5: Evaluation and Report Management -->
+          <section class="section" id="section-evaluations">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Submit Evaluation / Final Report</h3>
+              </div>
+              <form id="evaluationForm" class="form-grid">
+                <input type="hidden" id="evaluationEditId" />
+                <label class="field">
+                  <span>Student</span>
+                  <select id="evaluationStudent" required></select>
+                </label>
+                <label class="field">
+                  <span>Supervisor Name</span>
+                  <input type="text" id="evaluationSupervisor" placeholder="Engr. Reyes" required />
+                </label>
+                <label class="field">
+                  <span>Performance Rating (1–5)</span>
+                  <input type="number" id="evaluationRating" min="1" max="5" step="0.1" value="4" required />
+                </label>
+                <label class="field">
+                  <span>Final Grade</span>
+                  <input type="text" id="evaluationGrade" placeholder="1.25 / A / 95" required />
+                </label>
+                <label class="field">
+                  <span>Report Status</span>
+                  <select id="evaluationStatus" required>
+                    <option value="Draft">Draft</option>
+                    <option value="Submitted">Submitted</option>
+                    <option value="Archived">Archived</option>
+                  </select>
+                </label>
+                <label class="field field-full">
+                  <span>Supervisor Evaluation</span>
+                  <textarea id="evaluationComments" rows="2" placeholder="Performance feedback from supervisor…" required></textarea>
+                </label>
+                <label class="field field-full">
+                  <span>Final Report Summary</span>
+                  <textarea id="evaluationReport" rows="3" placeholder="Student final report summary or documentation notes…" required></textarea>
+                </label>
+                <div class="form-actions field-full">
+                  <button type="submit" class="btn btn-primary">Save Evaluation</button>
+                  <button type="button" class="btn btn-ghost" id="evaluationCancelBtn" hidden>Cancel Edit</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Evaluation Results & Archived Reports</h3>
+                <span class="count-badge" id="evaluationCount">0 records</span>
+              </div>
+              <div id="evaluationList" class="record-list"></div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
